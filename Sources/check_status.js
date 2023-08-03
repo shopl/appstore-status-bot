@@ -33,29 +33,36 @@ const checkVersion = async (app) => {
   var appInfoKey = "appInfo-" + app.appID;
   var submissionStartKey = "submissionStart" + app.appID;
 
-  const db = dirty("store.db");
-  db.on("load", async function () {
-    var lastAppInfo = db.get(appInfoKey);
-    if (!lastAppInfo || lastAppInfo.status != app.status) {
-      console.log("[*] status is different");
-      slack.post(app, db.get(submissionStartKey));
-
-      if (app.status == "Waiting For Review") {
-        db.set(submissionStartKey, new Date());
-      }
-    } else {
-      console.log("[*] status is same");
-    }
-
-    db.rm(appInfoKey);
-    db.set(appInfoKey, app);
-
-    try {
-      const data = await fs.readFile("store.db", "utf-8");
-      await updateGist(data);
+  try {
+      await updateGist("");
     } catch (error) {
       console.log(error);
     }
+  
+  const db = dirty("store.db");
+  db.on("load", async function () {
+  
+    // var lastAppInfo = db.get(appInfoKey);
+    // if (!lastAppInfo || lastAppInfo.status != app.status) {
+    //   console.log("[*] status is different");
+    //   slack.post(app, db.get(submissionStartKey));
+
+    //   if (app.status == "Waiting For Review") {
+    //     db.set(submissionStartKey, new Date());
+    //   }
+    // } else {
+    //   console.log("[*] status is same");
+    // }
+
+    // db.rm(appInfoKey);
+    // db.set(appInfoKey, app);
+
+    // try {
+    //   const data = await fs.readFile("store.db", "utf-8");
+    //   await updateGist(data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   });
 };
 
