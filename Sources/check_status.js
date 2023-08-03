@@ -42,14 +42,13 @@ const checkVersion = async (app) => {
       slack.post(app, db.get(submissionStartKey));
 
       if (app.status == "Waiting For Review") {
-        db.set(submissionStartKey, new Date());
+        db.update(submissionStartKey, new Date());
       }
     } else {
       console.log("[*] status is same");
     }
 
-    db.rm(appInfoKey);
-    db.set(appInfoKey, app);
+    db.update(appInfoKey, app);
 
     try {
       const data = await fs.readFile("store.db", "utf-8");
