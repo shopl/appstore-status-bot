@@ -46,7 +46,7 @@ const checkVersion = async (app) => {
     } else {
       console.log("[*] status is same");
     }
-    
+
     db.rm(appInfoKey);
     db.set(appInfoKey, app);
 
